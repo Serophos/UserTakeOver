@@ -1,8 +1,8 @@
 {
   "name": "srag/user-take-over",
-  "description": "",
+  "description": "UserTakeOver (STWSH): STWSH fork providing user impersonation for ILIAS 11",
   "type": "project",
-  "license": "GPL-3.0",
+  "license": "GPL-3.0-only",
   "authors": [
     {
       "name": "Thibeau Fuhrer",
@@ -25,6 +25,9 @@
     "optimize-autoloader": true
   },
   "require": {
-    "php": ">=7.4"
+    "php": ">=8.3 <8.5"
+  },
+  "scripts": {
+    "test": "php \"$ILIAS_ROOT/vendor/composer/vendor/bin/phpunit\" -c phpunit.xml"
   }
 }

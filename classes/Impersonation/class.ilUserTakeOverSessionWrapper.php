@@ -46,6 +46,13 @@ class ilUserTakeOverSessionWrapper
      */
     public function save(): void
     {
-        ilSession::_writeData(session_id(), ilSession::dumpToString());
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            throw new RuntimeException('Cannot switch users without an active session.');
+        }
+
+        $data = session_encode();
+        if ($data === false || !ilSession::_writeData(session_id(), $data)) {
+            throw new RuntimeException('Unable to persist the impersonation session.');
+        }
     }
 }

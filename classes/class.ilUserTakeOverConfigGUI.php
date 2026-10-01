@@ -13,7 +13,6 @@ declare(strict_types=1);
  *
  * @ilCtrl_IsCalledBy ilUserTakeOverConfigGUI: ilObjComponentSettingsGUI
  * @ilCtrl_Calls      ilUserTakeOverConfigGUI: ilUserTakeOverSettingsGUI
- * @ilCtrl_Calls      ilUserTakeOverConfigGUI: ilUserTakeOverGroupMemberGUI
  * @ilCtrl_Calls      ilUserTakeOverConfigGUI: ilUserTakeOverGroupGUI
  *
  * @noinspection      AutoloadingIssuesInspection
@@ -26,6 +25,10 @@ class ilUserTakeOverConfigGUI extends ilPluginConfigGUI
     public function performCommand(string $cmd): void
     {
         global $DIC;
+
+        $DIC->ui()->mainTemplate()->setTitle(
+            $DIC->language()->txt('cmps_plugin') . ': ' . ilUserTakeOverPlugin::DISPLAY_NAME
+        );
 
         switch ($DIC->ctrl()->getNextClass()) {
             case strtolower(ilUserTakeOverSettingsGUI::class):

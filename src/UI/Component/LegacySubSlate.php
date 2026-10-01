@@ -2,7 +2,7 @@
 
 namespace srag\Plugins\UserTakeOver\UI\Component;
 
-use ILIAS\UI\Component\Legacy\Legacy as LegacyContent;
+use ILIAS\UI\Component\Legacy\Content as LegacyContent;
 use ILIAS\UI\Implementation\Component\MainControls\Slate\Legacy;
 
 /**

@@ -78,6 +78,12 @@ class ilUserTakeOverImpersonationHandler
      */
     public function impersonate(ilObjUser $target_user): void
     {
+        if ($target_user->getId() <= 0 || $target_user->getId() === ANONYMOUS_USER_ID) {
+            $this->sendFailure($this->translator->txt(ITranslator::MSG_USER_NOT_FOUND));
+            $this->redirectToDashboard();
+            return;
+        }
+
         if ($this->isImpersonationActive()) {
             $this->stopImpersonation($target_user);
         } else {
@@ -103,6 +109,7 @@ class ilUserTakeOverImpersonationHandler
             );
 
             $this->redirectToDashboard();
+            return;
         }
 
         $this->session->set(self::ORIGINAL_USER_ID, null);
@@ -124,6 +131,7 @@ class ilUserTakeOverImpersonationHandler
             );
 
             $this->redirectToDashboard();
+            return;
         }
 
         $this->session->set(self::ORIGINAL_USER_ID, $this->current_user->getId());

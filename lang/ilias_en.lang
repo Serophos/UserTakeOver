@@ -1,8 +1,8 @@
 settings#:#Settings
 settings_allowed_global_roles#:#Available to
-settings_allowed_global_roles_info#:#Select which global roles are permitted to use UserTakeOver.
+settings_allowed_global_roles_info#:#Select which global roles are permitted to use UserTakeOver (STWSH).
 settings_allow_admin_impersonation#:#Impersonate admins
-settings_allow_admin_impersonation_info#:#If enabled, users with access to UserTakeOver may impersonate administrators.
+settings_allow_admin_impersonation_info#:#If enabled, users with access to UserTakeOver (STWSH) may impersonate administrators.
 
 group#:#Group
 groups#:#Groups
@@ -26,7 +26,7 @@ group_action_edit#:#Edit
 group_action_delete#:#Delete
 group_action_edit_members#:#Edit members
 
-tool_title#:#UserTakeOver
+tool_title#:#UserTakeOver (STWSH)
 tool_title_leave#:#Stop impersonation
 tool_title_search#:#Search users
 

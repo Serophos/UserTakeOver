@@ -1,3 +1,28 @@
+# 7.0.2 — Plugin overview branding
+
+- Display "UserTakeOver (STWSH)" in the ILIAS plugin overview while retaining the technical plugin name and ID.
+- Set Studentenwerk SH and winkler@studentenwerk.sh as the responsible maintainer.
+
+# 7.0.1 — STWSH fork branding and template fix
+
+- Correct search and status template paths for the ILIAS 11 public web root.
+
+- Display "UserTakeOver (STWSH)" in the toolbar, configuration heading and translated help text.
+- Identify the STWSH fork in documentation and package descriptions.
+- Preserve the technical plugin name, ID, class names, paths and existing data.
+
+# 7.0.0 — ILIAS 11
+
+- Require ILIAS 11 and PHP 8.3/8.4; preserve existing settings, groups and restrictions.
+- Migrate legacy content and metabar decoration to the ILIAS 11 interfaces.
+- Use the supported async tag autocomplete API and preserve readable member labels.
+- Delegate standard-page construction to ILIAS and retain nested mode precedence.
+- Persist correctly encoded sessions; stop denied transitions and reject missing targets.
+- Handle missing search terms, escape search names and restore keyboard selection.
+- Repair the legacy demo-group migration and remove a nonexistent controller declaration.
+- Upgrade Rollup to 4.x, distribute browser assets, and add PHP/database/frontend regression tests.
+- Replace the ILIAS 9 CI template with an ILIAS 11 runner job.
+
 # UserTakeOver Changelog
 
 ## 6.1.2

@@ -20,6 +20,7 @@ class GroupFormBuilder extends AbstractFormBuilder
     protected Group $group;
     protected array $global_roles;
     protected string $ajax_action;
+    protected array $member_labels;
 
     /**
      * @var array<int, string> $global_roles
@@ -32,12 +33,14 @@ class GroupFormBuilder extends AbstractFormBuilder
         FieldFactory $fields,
         Factory $refinery,
         string $form_action,
-        string $ajax_action
+        string $ajax_action,
+        array $member_labels = []
     ) {
         parent::__construct($translator, $forms, $fields, $refinery, $form_action);
         $this->group = $group;
         $this->global_roles = $global_roles;
         $this->ajax_action = $ajax_action;
+        $this->member_labels = $member_labels;
     }
 
     public function getForm(): Form
@@ -73,12 +76,16 @@ class GroupFormBuilder extends AbstractFormBuilder
             ] : null
         );
 
-        $inputs[ITranslator::GROUP_MEMBERS] = $this->fields->tag(
-            $this->translator->txt(ITranslator::GROUP_MEMBERS),
-            []
-        )->withAdditionalOnLoadCode(
-            $this->getTagInputAutoCompleteBinder($this->ajax_action)
-        )->withValue(array_map('strval', $this->group->getGroupMembers()));
+        $members = array_map('strval', $this->group->getGroupMembers());
+        $inputs[ITranslator::GROUP_MEMBERS] = $this->withMemberAutocomplete(
+            $this->fields->tag($this->translator->txt(ITranslator::GROUP_MEMBERS), $members),
+            $this->ajax_action
+        )->withValue($members)->withAdditionalOnLoadCode(
+            fn(string $id): string => 'il.Plugins.UserTakeOver.labelMembers('
+                . json_encode($id, JSON_THROW_ON_ERROR) . ', '
+                . json_encode($this->member_labels, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_THROW_ON_ERROR)
+                . ');'
+        );
 
         return $this->forms->standard($this->form_action, [
             ITranslator::GROUP => $this->fields->section($inputs, $this->translator->txt(ITranslator::GROUP)),

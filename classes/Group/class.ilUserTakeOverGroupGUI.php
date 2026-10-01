@@ -186,7 +186,7 @@ class ilUserTakeOverGroupGUI extends ilUserTakeOverAbstractGUI
         $term = $this->getRequestedString($this->get_request, IRequestParameters::SEARCH_TERM);
 
         $possible_targets = [];
-        foreach ($this->general_repository->findUsers($term) as $user) {
+        foreach (($term === null || trim($term) === '' ? [] : $this->general_repository->findUsers($term)) as $user) {
             $user_id = (int) $user['value'];
             if ($user_id !== $this->current_user->getId() &&
                 $this->access_handler->canCurrentUserImpersonate(
@@ -280,6 +280,14 @@ class ilUserTakeOverGroupGUI extends ilUserTakeOverAbstractGUI
         $group = $this->getRequestedGroup($this->get_request) ?? new Group(null, '');
         $this->ctrl->setParameterByClass(self::class, IRequestParameters::GROUP_ID, $group->getId());
 
+        $member_labels = [];
+        foreach ($group->getGroupMembers() as $member_id) {
+            $user = $this->general_repository->getUser($member_id);
+            $member_labels[(string) $member_id] = $user->getId() === $member_id
+                ? $user->getLogin() . ' (' . $user->getFirstname() . ' ' . $user->getLastname() . ')'
+                : (string) $member_id;
+        }
+
         return new GroupFormBuilder(
             $group,
             $this->general_repository->getAvailableGlobalRoles(),
@@ -288,7 +296,8 @@ class ilUserTakeOverGroupGUI extends ilUserTakeOverAbstractGUI
             $this->components->input()->field(),
             $this->getRefinery(),
             $this->ctrl->getFormActionByClass(self::class, self::CMD_SAVE),
-            $this->ctrl->getLinkTargetByClass(self::class, self::CMD_FIND_MEMBERS, null, true),
+            ILIAS_HTTP_PATH . '/' . $this->ctrl->getLinkTargetByClass(self::class, self::CMD_FIND_MEMBERS, null, true),
+            $member_labels,
         );
     }
 

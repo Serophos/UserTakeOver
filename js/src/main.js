@@ -1,6 +1,5 @@
-import uto from "./uto"
-var il = il || {};
-il.Plugins = il.Plugins || {};
-il.Plugins.UserTakeOver = il.Plugins.UserTakeOver || {};
-il.Plugins.UserTakeOver = uto($);
+import uto from './uto.js';
 
+window.il = window.il || {};
+window.il.Plugins = window.il.Plugins || {};
+window.il.Plugins.UserTakeOver = uto(window.jQuery);

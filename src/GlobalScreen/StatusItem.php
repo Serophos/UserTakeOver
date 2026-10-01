@@ -2,7 +2,7 @@
 
 namespace srag\Plugins\UserTakeOver\GlobalScreen;
 
-use ILIAS\UI\Component\Legacy\Legacy;
+use ILIAS\UI\Component\Legacy\Content as Legacy;
 use ILIAS\GlobalScreen\Identification\IdentificationInterface;
 use ILIAS\UI\Factory;
 use srag\Plugins\UserTakeOver\ITranslator;
@@ -30,7 +30,7 @@ class StatusItem extends LegacySubItem
     {
         global $DIC;
         $tpl = new \ilTemplate(
-            './Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver/templates/tpl.uto_status.html',
+            'Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver/templates/tpl.uto_status.html',
             true,
             true
         );
@@ -39,7 +39,7 @@ class StatusItem extends LegacySubItem
         $tpl->setVariable("ORIGINAL_USER_LOGIN", \ilObjUser::_lookupLogin($this->original_user_id));
         $tpl->setVariable("IMPERSONATED_USER_LOGIN", \ilObjUser::_lookupLogin($DIC->user()->getId()));
 
-        return $DIC->ui()->factory()->legacy($tpl->get());
+        return $DIC->ui()->factory()->legacy()->content($tpl->get());
     }
 
 }

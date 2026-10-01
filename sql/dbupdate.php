@@ -71,23 +71,23 @@ if ($ilDB->tableExists('ui_uihk_usrto_config')) {
         $ilDB->query("SELECT * FROM ui_uihk_usrto_config")
     );
 
-    $label = (new ilUserTakeOverPlugin())->txt('demo_group');
+    $label = 'Demo group';
 
     foreach ($results as $query_result) {
         $group_id = (int) $ilDB->nextId('ui_uihk_usrto_grp');
         $ilDB->insert('ui_uihk_usrto_grp', [
-            'id' => ['integer' => $group_id],
-            'title' => ['text' => $label],
-            'description' => ['text' => $label],
+            'id' => ['integer', $group_id],
+            'title' => ['text', $label],
+            'description' => ['text', $label],
         ]);
 
         $user_ids = (array) json_decode($query_result['demo_group']);
 
         foreach ($user_ids as $user_id) {
             $ilDB->insert('ui_uihk_usrto_member', [
-                'id' => ['integer' => (int) $ilDB->nextId('ui_uihk_usrto_member')],
-                'group_id' => ['integer' => $group_id],
-                'user_id' => ['integer' => $user_id],
+                'id' => ['integer', (int) $ilDB->nextId('ui_uihk_usrto_member')],
+                'group_id' => ['integer', $group_id],
+                'user_id' => ['integer', (int) $user_id],
             ]);
         }
     }

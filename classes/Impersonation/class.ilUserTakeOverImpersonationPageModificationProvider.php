@@ -8,13 +8,9 @@ use ILIAS\GlobalScreen\Scope\Layout\Factory\PageBuilderModification;
 use ILIAS\GlobalScreen\Scope\Layout\Provider\PagePart\PagePartProvider;
 use ILIAS\GlobalScreen\Scope\Layout\Provider\ModificationProvider;
 use ILIAS\GlobalScreen\Scope\Layout\Builder\StandardPageBuilder;
-use ILIAS\GlobalScreen\Scope\Layout\MetaContent\MetaContent;
 use ILIAS\GlobalScreen\ScreenContext\Stack\ContextCollection;
 use ILIAS\GlobalScreen\ScreenContext\Stack\CalledContexts;
-use ILIAS\UI\Component\Layout\Page\Standard;
 use ILIAS\UI\Component\Layout\Page\Page;
-use ILIAS\UI\Factory;
-use ILIAS\Data\URI;
 
 /**
  * This modification provider adds a mode info component to the current page during an
@@ -39,7 +35,6 @@ class ilUserTakeOverImpersonationPageModificationProvider extends AbstractModifi
     protected ilUserTakeOverAccessHandler $access_handler;
     protected ILIAS\Data\Factory $data_factory;
     protected ILIAS\UI\Factory $ui_factory;
-    protected MetaContent $meta_content;
     protected ITranslator $translator;
     /** @var ModificationProvider[] */
     protected array $conflicting_core_providers = [];
@@ -75,50 +70,11 @@ class ilUserTakeOverImpersonationPageModificationProvider extends AbstractModifi
     }
 
     /**
-     * Mostly copied from @see StandardPageBuilder::build()
+     * Keep page construction aligned with the installed ILIAS version.
      */
     protected function buildStandardPage(PagePartProvider $provider): Page
     {
-        $this->init();
-
-        $meta_bar = $provider->getMetaBar();
-        $main_bar = $provider->getMainBar();
-        $bread_crumbs = $provider->getBreadCrumbs();
-        $header_image = $provider->getLogo();
-        $responsive_header_image = $provider->getResponsiveLogo();
-        $favicon_path = $provider->getFaviconPath();
-        $footer = $provider->getFooter();
-        $title = $provider->getTitle();
-        $short_title = $provider->getShortTitle();
-        $view_title = $provider->getViewTitle();
-        $toast_container = $provider->getToastContainer();
-
-        $page = $this->ui_factory->layout()->page()->standard(
-            [$provider->getContent()],
-            $meta_bar,
-            $main_bar,
-            $bread_crumbs,
-            $header_image,
-            $responsive_header_image,
-            $favicon_path,
-            $toast_container,
-            $footer,
-            $title,
-            $short_title,
-            $view_title,
-        );
-
-        foreach ($this->meta_content->getMetaData() as $meta_datum) {
-            $page = $page->withAdditionalMetaDatum($meta_datum);
-        }
-        if (null !== ($og_meta_data = $this->meta_content->getOpenGraphMetaData())) {
-            $page = $page->withAdditionalMetaDatum($og_meta_data);
-        }
-
-        $page = $page->withSystemInfos($provider->getSystemInfos());
-        $page = $page->withTextDirection($this->meta_content->getTextDirection() ?? Standard::LTR);
-
-        return $page;
+        return (new StandardPageBuilder())->build($provider);
     }
 
     /**
@@ -141,11 +97,6 @@ class ilUserTakeOverImpersonationPageModificationProvider extends AbstractModifi
             new ilLSViewLayoutProvider($this->dic),
         ];
 
-        // for ILIAS<=v9.14:
-        if (class_exists('\ILIAS\Services\WOPI\Embed\EmbeddedApplicationGSProvider')) {
-            $this->conflicting_core_providers[] = new \ILIAS\Services\WOPI\Embed\EmbeddedApplicationGSProvider($this->dic);
-        }
-        // for ILIAS>=v9.15:
         if (class_exists('\ILIAS\WOPI\Embed\EmbeddedApplicationGSProvider')) {
             $this->conflicting_core_providers[] = new \ILIAS\WOPI\Embed\EmbeddedApplicationGSProvider($this->dic);
         }
@@ -169,7 +120,6 @@ class ilUserTakeOverImpersonationPageModificationProvider extends AbstractModifi
             $this->dic->ctrl(),
             $this->dic->user()
         );
-        $this->meta_content = $this->dic->globalScreen()->layout()->meta();
         $this->ui_factory = $this->dic->ui()->factory();
         $this->data_factory = new ILIAS\Data\Factory();
         $this->is_initiaised = true;

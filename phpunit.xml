@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="tests/bootstrap.php" cacheDirectory="/tmp/usertakeover-phpunit-cache" failOnWarning="true" failOnRisky="true">
+  <testsuites><testsuite name="UserTakeOver"><directory>tests/php</directory></testsuite></testsuites>
+</phpunit>

@@ -1,23 +1,29 @@
 {
   "name": "usertakeover",
-  "version": "1.0.0",
-  "description": "The UserTakeOver-Plugin gives you the possibility to take the view of another user.",
-  "main": "js/src/index.js",
-  "directories": {
-    "doc": "doc"
-  },
+  "version": "7.0.2",
+  "description": "UserTakeOver (STWSH): STWSH fork providing user impersonation for ILIAS 11",
+  "main": "js/dist/main.js",
   "dependencies": {
-    "@varvet/tiny-autocomplete": "^1.1.1",
-    "rollup": "^2.23.0"
+    "@varvet/tiny-autocomplete": "1.1.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "jquery": "^3.7.1",
+    "jsdom": "^26.1.0",
+    "rollup": "^4.63.5"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rollup --config rollup.config.mjs && node scripts/copy-assets.mjs",
+    "test": "node --test tests/js/*.test.mjs"
   },
   "repository": {
     "type": "git",
     "url": "git@git.studer-raimann.ch:ILIAS/Plugins/UserTakeOver.git"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "private": true,
+  "engines": {
+    "node": "^22.18 || ^24.0",
+    "npm": "^10.9.3 || ^11.3"
+  }
 }

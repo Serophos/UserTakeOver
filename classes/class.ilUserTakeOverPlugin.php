@@ -16,6 +16,7 @@ class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin implements ITransla
 {
     public const PLUGIN_BASE = './Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver';
     public const PLUGIN_ID = 'usrto';
+    public const DISPLAY_NAME = 'UserTakeOver (STWSH)';
 
     public function __construct(
         ilDBInterface $db,
@@ -27,7 +28,7 @@ class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin implements ITransla
 
         if ($DIC->offsetExists('global_screen')) {
             $meta_content = $DIC->globalScreen()->layout()->meta();
-            $meta_content->addJs(self::PLUGIN_BASE . '/node_modules/@varvet/tiny-autocomplete/src/tiny-autocomplete.js', false, 3);
+            $meta_content->addJs(self::PLUGIN_BASE . '/js/dist/tiny-autocomplete.js', false, 3);
             $meta_content->addJs(self::PLUGIN_BASE . '/js/dist/main.js', false, 1);
             $meta_content->addOnloadCode("il.Plugins.UserTakeOver.init('.uto-search')");
 

@@ -11,20 +11,21 @@ use ILIAS\GlobalScreen\Scope\MetaBar\Factory\hasSymbol;
 use ILIAS\GlobalScreen\Scope\MetaBar\Factory\hasTitle;
 use ILIAS\GlobalScreen\Scope\MetaBar\Factory\isItem;
 use ILIAS\UI\Component\Component;
-use ILIAS\UI\Component\Legacy\Legacy;
+use ILIAS\UI\Component\Legacy\Content as Legacy;
 use ILIAS\UI\Component\Symbol\Symbol;
 use ILIAS\UI\Factory;
-use Closure;
-use ILIAS\GlobalScreen\isGlobalScreenItem;
+use ILIAS\GlobalScreen\Scope\isDecorateable;
+use ILIAS\GlobalScreen\Scope\ComponentDecoratorTrait;
 use srag\Plugins\UserTakeOver\UI\Component\LegacySubSlate;
 
 /**
  * @author Fabian Schmid <fabian@sr.solutions>
  */
-abstract class LegacySubItem extends AbstractChildItem implements hasSymbol, hasTitle
+abstract class LegacySubItem extends AbstractChildItem implements hasSymbol, hasTitle, isDecorateable
 {
+    use ComponentDecoratorTrait;
+
     protected Factory $ui_factory;
-    protected ?Closure $symbol_decorator = null;
     protected ?Legacy $content = null;
     protected ?Symbol $symbol = null;
     protected string $title = "";
@@ -50,17 +51,6 @@ abstract class LegacySubItem extends AbstractChildItem implements hasSymbol, has
                 );
             }
         };
-    }
-
-    public function addSymbolDecorator(Closure $symbol_decorator): isGlobalScreenItem
-    {
-        $this->symbol_decorator = $symbol_decorator;
-        return $this;
-    }
-
-    public function getSymbolDecorator(): ?Closure
-    {
-        return $this->symbol_decorator;
     }
 
     public function getContent(): Legacy

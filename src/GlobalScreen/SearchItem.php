@@ -2,7 +2,7 @@
 
 namespace srag\Plugins\UserTakeOver\GlobalScreen;
 
-use ILIAS\UI\Component\Legacy\Legacy;
+use ILIAS\UI\Component\Legacy\Content as Legacy;
 
 /**
  * Class SearchItem
@@ -56,11 +56,11 @@ class SearchItem extends LegacySubItem
     {
         global $DIC;
 
-        $tpl = new \ilTemplate('./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver/templates/tpl.uto_search.html', true, true);
-        $tpl->setVariable('PLACEHOLDER', $this->getPlaceholder());
-        $tpl->setVariable('SEARCH_URL', $this->getUrl());
+        $tpl = new \ilTemplate('Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver/templates/tpl.uto_search.html', true, true);
+        $tpl->setVariable('PLACEHOLDER', htmlspecialchars($this->getPlaceholder(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'));
+        $tpl->setVariable('SEARCH_URL', htmlspecialchars($this->getUrl(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'));
 
-        return $DIC->ui()->factory()->legacy($tpl->get());
+        return $DIC->ui()->factory()->legacy()->content($tpl->get());
     }
 
 }

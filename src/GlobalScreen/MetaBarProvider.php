@@ -5,7 +5,6 @@ namespace srag\Plugins\UserTakeOver\GlobalScreen;
 use ILIAS\GlobalScreen\Identification\IdentificationInterface;
 use ILIAS\GlobalScreen\Scope\MetaBar\Provider\AbstractStaticMetaBarPluginProvider;
 use ILIAS\UI\Component\Symbol\Icon\Icon;
-use srag\Plugins\UserTakeOver\UI\Form\TagInputAutoCompleteBinder;
 use ILIAS\UI\Factory as Components;
 use ILIAS\UI\Renderer;
 use ILIAS\Refinery\Factory as Refinery;
@@ -21,7 +20,6 @@ class MetaBarProvider extends AbstractStaticMetaBarPluginProvider
     use \ilUserTakeOverImpersonationTarget;
     use \ilUserTakeOverPluginInstance;
     use \ilUserTakeOverDisplayName;
-    use TagInputAutoCompleteBinder;
 
     protected const ICON_DIRECTORY = 'Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver/templates/images/';
 
@@ -94,6 +92,7 @@ class MetaBarProvider extends AbstractStaticMetaBarPluginProvider
         if ($this->access_handler->canCurrentUserUsePlugin()) {
             $items[] = (new SearchItem($this->getItemId('search'), $this->dic->ui()->factory()))
                 ->withSymbol($this->getIcon('search.svg'))
+                ->withPlaceholder($this->translator->txt(ITranslator::TOOL_TITLE_SEARCH))
                 ->withUrl(
                     $this->ctrl->getLinkTargetByClass(
                         [\ilObjPluginDispatchGUI::class, \ilUserTakeOverGroupGUI::class],

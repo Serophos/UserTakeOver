@@ -1,27 +1,20 @@
-include:
-  remote: https://git.sr.solutions/gitlab-ci/templates/review.yml
-
 stages:
-  - review
+  - test
 
-review:
-  extends: .review_deployment
-  variables:
-    REVIEW_APP_IMAGE: srsolutions/ilias:9
-    REVIEW_APP_DEST: /var/www/html/Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver
-    ILIAS_DEVMODE: 1
-    ILIAS_INSTALL_ARGUMENTS: --no-plugins
-  environment:
-    name: review/${CI_BUILD_REF_SLUG}
-    url: http://${CI_PROJECT_PATH_SLUG}_${CI_BUILD_REF_SLUG}.review.sr.solutions
-    on_stop: stop_review
+# A shell runner with an installed ILIAS 11 test instance, PHP 8.3/8.4,
+# Composer 2, Node 22/24 and npm 10/11. Set ILIAS_ROOT on that runner.
+# Set USRTO_TEST_CLIENT_INI to enable the isolated database tests.
+ilias11:
+  stage: test
+  tags:
+    - ilias11
   script:
-    - srag-review deploy
-
-stop_review:
-  extends: .review_deployment
-  environment:
-    name: review/${CI_BUILD_REF_SLUG}
-    action: stop
-  script:
-    - srag-review stop
+    - test -n "$ILIAS_ROOT"
+    - composer install --no-interaction --no-plugins --no-scripts
+    - composer validate --strict
+    - composer check-platform-reqs
+    - npm ci --ignore-scripts
+    - npm run build
+    - git diff --exit-code -- js/dist
+    - npm test
+    - php "$ILIAS_ROOT/vendor/composer/vendor/bin/phpunit" -c phpunit.xml

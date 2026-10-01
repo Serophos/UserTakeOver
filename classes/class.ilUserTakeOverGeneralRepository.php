@@ -75,8 +75,8 @@ class ilUserTakeOverGeneralRepository implements IGeneralRepository
             $user = new ilObjUser($user_id);
         } catch (Throwable $any) {
             $user = new ilObjUser(ANONYMOUS_USER_ID);
-        } finally {
-            return $user;
         }
+
+        return $user;
     }
 }
